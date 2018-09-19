@@ -39,8 +39,9 @@ class User(Base):
 
 # 初始化数据库连接:
 engine = create_engine(
-    'mysql+pymysql://' + config.get_db_username() + ':' + config.get_db_password()
-    + '@' + config.get_db_local() + ':' + config.get_db_port() + '/yi_guan', pool_size=20, max_overflow=0)
+    'mysql+pymysql://%s:%s@%s:%s/yi_guan' %
+    (config.get_db_username(), config.get_db_password(), config.get_db_local(), config.get_db_port()),
+    pool_size=20, max_overflow=0)
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 
@@ -77,7 +78,8 @@ def save_thread(feed_list, mid):
                 print('============================================================')
                 raise e
         session.close()
-    print(tools.print_time(feed_list[-1]), '成功', success, '失败', failed)
+    current_time = tools.print_time(feed_list[-1])
+    print('时间: %s, 版块: %s, 成功: %s, 失败: %s' % (current_time, config.mid_name_map[mid], success, failed))
 
 
 def get_thread_score(mid, last=True):
