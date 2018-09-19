@@ -18,6 +18,7 @@ class Feed:
         """
         self.url = 'https://api.jijigugu.club/feed/list?platform=2&mid=' + mid
         self.last_score = last_score
+        self.is_end = False
 
     def get_feed_url(self, last_score):
         """
@@ -33,9 +34,14 @@ class Feed:
         获取成功后会自动设置last_score
         :return: 经过decode之后的对象
         """
+        if self.is_end:
+            return []
         url = self.get_feed_url(self.last_score)
         r = requests.get(url, headers=headers, verify=True)
         data = demjson.decode(r.text)['data']
+        if not data:
+            self.is_end = True
+            return []
         self.last_score = data[-1]['id']
         return data
 
