@@ -12,8 +12,8 @@ import tools
 Base = declarative_base()
 
 
-# 定义User对象:
-class User(Base):
+# 定义Thread对象:
+class Thread(Base):
     # 表的名字:
     __tablename__ = 'thread'
 
@@ -58,14 +58,14 @@ def save_thread(feed_list, mid):
     for content in feed_list:
         session = DBSession()
         try:
-            new_user = User(id=content['id'], tid=content['tid'], mid=mid, text=content['text'], age=content['age'],
-                            gender=content['gender'], photos=str(content['photos']), nickname=content['nickname'],
-                            weather=content['weather'], temperature=content['temperature'],
-                            createTime=content['createTime'],
-                            likedNum=content['likedNum'], commentedNum=content['commentedNum'],
-                            isLiked=content['isLiked'],
-                            score=content['score'], isTop=content['isTop'])
-            session.add(new_user)
+            new_thread = Thread(id=content['id'], tid=content['tid'], mid=mid, text=content['text'], age=content['age'],
+                                gender=content['gender'], photos=str(content['photos']), nickname=content['nickname'],
+                                weather=content['weather'], temperature=content['temperature'],
+                                createTime=content['createTime'],
+                                likedNum=content['likedNum'], commentedNum=content['commentedNum'],
+                                isLiked=content['isLiked'],
+                                score=content['score'], isTop=content['isTop'])
+            session.add(new_thread)
             session.commit()
             success += 1
         except IntegrityError as e:
@@ -89,8 +89,8 @@ def get_thread_score(mid, last=True):
     :param last: 是否最后一条
     :return: score
     """
-    order = User.createTime if last else desc(User.createTime)
+    order = Thread.createTime if last else desc(Thread.createTime)
     session = DBSession()
-    thread = session.query(User).filter(User.mid == mid).order_by(order).first()
+    thread = session.query(Thread).filter(Thread.mid == mid).order_by(order).first()
     session.close()
     return None if thread is None else thread.score
