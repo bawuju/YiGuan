@@ -6,7 +6,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import desc
 from sqlalchemy.exc import IntegrityError
 import config
-import tools
 
 # 创建对象的基类:
 Base = declarative_base()
@@ -51,7 +50,7 @@ def save_thread(feed_list, mid):
     保存一罐的内容
     :param feed_list: decode的对象
     :param mid: 版块id
-    :return: None
+    :return: 成功数量、失败数量
     """
     success = 0
     failed = 0
@@ -78,8 +77,7 @@ def save_thread(feed_list, mid):
                 print('============================================================')
                 raise e
         session.close()
-    current_time = tools.print_time(feed_list[-1])
-    print('时间: %s, 版块: %s, 成功: %s, 失败: %s' % (current_time, config.mid_name_map[mid], success, failed))
+    return success, failed
 
 
 def get_thread_score(mid, last=True):

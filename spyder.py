@@ -3,6 +3,7 @@
 import demjson
 import requests
 import config
+import time
 
 headers = {
     'User-Agent': 'guan/1.3.2 (club.jijigugu.yiguan; build:225; iOS 12.0.0) Alamofire/4.7.3',
@@ -38,23 +39,26 @@ class Feed:
         """
         获取下一页内容
         获取成功后会自动设置last_score
-        :return: 经过decode之后的对象
+        :return: 经过decode之后的对象、请求耗时、解析耗时
         """
         if self.is_end:
-            return []
+            return [], 0, 0
         url = self.get_feed_url(self.last_score)
+        time_1 = time.time()
         while True:
             try:
                 r = requests.get(url, headers=headers, verify=True)
                 break
             except Exception as e:
                 print('产生异常 = %s, 版块 = %s, 重试中...' % (str(e), self.name))
+        time_2 = time.time()
         data = demjson.decode(r.text)['data']
+        time_3 = time.time()
         if not data:
             self.is_end = True
-            return []
+            return [], time_2 - time_1, time_3 - time_2
         self.last_score = data[-1]['id']
-        return data
+        return data, time_2 - time_1, time_3 - time_2
 
 
 class Comment:
