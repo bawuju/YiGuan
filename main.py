@@ -18,7 +18,7 @@ def get(target_mid):
         success, failed = db.save_thread(feed_list, target_mid)
         save_time = time.time() - save_time_start
         last_time = tools.print_time(feed_list[-1])
-        print('最后一条的时间: %s, 版块: %s, 成功: %s, 失败: %s, 请求耗时 %s 秒, 解析耗时 %s 秒, 保存耗时 %s 秒' %
+        print('最后一条的时间: %s, 版块: %s, 成功: %s, 失败: %s, 请求耗时 %.3f 秒, 解析耗时 %.3f 秒, 保存耗时 %.3f 秒' %
               (last_time, config.mid_name_map[target_mid], success, failed, request_time, decode_time, save_time))
     print('版块: %s 已完成' % config.mid_name_map[target_mid])
 
