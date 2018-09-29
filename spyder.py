@@ -5,7 +5,11 @@ import requests
 import config
 
 headers = {
-    'User-Agent': 'guan/1.3.1 (club.jijigugu.yiguan; build:212; iOS 11.4.1) Alamofire/4.7.0'
+    'User-Agent': 'guan/1.3.2 (club.jijigugu.yiguan; build:225; iOS 12.0.0) Alamofire/4.7.3',
+    'Accept': '*/*',
+    'Accept-Language': 'zh-Hans-CN;q=1.0, en-CN;q=0.9',
+    'Accept-Encoding': 'gzip;q=1.0, compress;q=0.5',
+    'Connection': 'keep-alive'
 }
 
 
