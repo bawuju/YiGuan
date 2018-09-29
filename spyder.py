@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 import demjson
 import requests
+import config
 
 headers = {
     'User-Agent': 'guan/1.3.1 (club.jijigugu.yiguan; build:212; iOS 11.4.1) Alamofire/4.7.0'
@@ -19,6 +20,7 @@ class Feed:
         self.url = 'https://api.jijigugu.club/feed/list?platform=2&mid=' + mid
         self.last_score = last_score
         self.is_end = False
+        self.name = config.mid_name_map[mid]
 
     def get_feed_url(self, last_score):
         """
@@ -37,7 +39,12 @@ class Feed:
         if self.is_end:
             return []
         url = self.get_feed_url(self.last_score)
-        r = requests.get(url, headers=headers, verify=True)
+        while True:
+            try:
+                r = requests.get(url, headers=headers, verify=True)
+                break
+            except Exception as e:
+                print('产生异常 = %s, 版块 = %s, 重试中...' % (str(e), self.name))
         data = demjson.decode(r.text)['data']
         if not data:
             self.is_end = True
