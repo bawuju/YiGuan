@@ -54,8 +54,8 @@ def save_thread(feed_list, mid):
     """
     success = 0
     failed = 0
+    session = DBSession()
     for content in feed_list:
-        session = DBSession()
         try:
             new_thread = Thread(id=content['id'], tid=content['tid'], mid=mid, text=content['text'], age=content['age'],
                                 gender=content['gender'], photos=str(content['photos']), nickname=content['nickname'],
@@ -76,7 +76,7 @@ def save_thread(feed_list, mid):
                 print(str(e))
                 print('============================================================')
                 raise e
-        session.close()
+    session.close()
     return success, failed
 
 
