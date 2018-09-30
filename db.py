@@ -52,18 +52,32 @@ def save_thread(feed_list, mid):
     :param mid: 版块id
     :return: 成功数量、失败数量
     """
-    session = DBSession()
+    success = 0
+    failed = 0
     for content in feed_list:
-        new_thread = Thread(id=content['id'], tid=content['tid'], mid=mid, text=content['text'], age=content['age'],
-                            gender=content['gender'], photos=str(content['photos']), nickname=content['nickname'],
-                            weather=content['weather'], temperature=content['temperature'],
-                            createTime=content['createTime'],
-                            likedNum=content['likedNum'], commentedNum=content['commentedNum'],
-                            isLiked=content['isLiked'],
-                            score=content['score'], isTop=content['isTop'])
-        session.add(new_thread)
-    session.commit()
-    session.close()
+        session = DBSession()
+        try:
+            new_thread = Thread(id=content['id'], tid=content['tid'], mid=mid, text=content['text'], age=content['age'],
+                                gender=content['gender'], photos=str(content['photos']), nickname=content['nickname'],
+                                weather=content['weather'], temperature=content['temperature'],
+                                createTime=content['createTime'],
+                                likedNum=content['likedNum'], commentedNum=content['commentedNum'],
+                                isLiked=content['isLiked'],
+                                score=content['score'], isTop=content['isTop'])
+            session.add(new_thread)
+            session.commit()
+            success += 1
+        except IntegrityError as e:
+            failed += 1
+            if 'Duplicate entry' in str(e):
+                pass
+            else:
+                print('============================================================')
+                print(str(e))
+                print('============================================================')
+                raise e
+        session.close()
+    return success, failed
 
 
 def get_thread_score(mid, last=True):
