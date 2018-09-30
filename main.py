@@ -18,8 +18,8 @@ def get(target_mid):
         db.save_thread(feed_list, target_mid)
         save_time = time.time() - save_time_start
         last_time = tools.print_time(feed_list[-1])
-        print('最后一条的时间: %s, 版块: %s, 请求耗时 %.3f 秒, 解析耗时 %.3f 秒, 保存耗时 %.3f 秒' %
-              (last_time, config.mid_name_map[target_mid], request_time, decode_time, save_time / len(feed_list)))
+        print('最后一条的时间: %s, 版块: %s, 长度: %d, 请求耗时 %.3f 秒, 解析耗时 %.3f 秒, 保存耗时 %.3f 秒' %
+              (last_time, config.mid_name_map[target_mid], len(feed_list), request_time, decode_time, save_time / len(feed_list)))
     print('版块: %s 已完成' % config.mid_name_map[target_mid])
 
 
