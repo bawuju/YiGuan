@@ -52,19 +52,34 @@ def save_thread(feed_list, mid):
     :param mid: 版块id
     :return: 成功数量、失败数量
     """
+    success = len(feed_list)
+    failed = 0
+    feed_data_vo_list = [convert_to_data_vo(content, mid) for content in feed_list]
+    session = DBSession()
+    for feed_data_vo in feed_data_vo_list:
+        session.add(feed_data_vo)
+    try:
+        session.commit()
+    except Exception:
+        success, failed = save_thread_one_by_one(feed_list, mid)
+    session.close()
+    return success, failed
+
+
+def save_thread_one_by_one(feed_list, mid):
+    """
+    保存一罐的内容，一条条来
+    :param feed_list: decode的对象
+    :param mid: 版块id
+    :return: 成功数量、失败数量
+    """
     success = 0
     failed = 0
-    for content in feed_list:
+    feed_data_vo_list = [convert_to_data_vo(content, mid) for content in feed_list]
+    for feed_data_vo in feed_data_vo_list:
         session = DBSession()
+        session.add(feed_data_vo)
         try:
-            new_thread = Thread(id=content['id'], tid=content['tid'], mid=mid, text=content['text'], age=content['age'],
-                                gender=content['gender'], photos=str(content['photos']), nickname=content['nickname'],
-                                weather=content['weather'], temperature=content['temperature'],
-                                createTime=content['createTime'],
-                                likedNum=content['likedNum'], commentedNum=content['commentedNum'],
-                                isLiked=content['isLiked'],
-                                score=content['score'], isTop=content['isTop'])
-            session.add(new_thread)
             session.commit()
             success += 1
         except IntegrityError as e:
@@ -78,6 +93,16 @@ def save_thread(feed_list, mid):
                 raise e
         session.close()
     return success, failed
+
+
+def convert_to_data_vo(content, mid):
+    return Thread(id=content['id'], tid=content['tid'], mid=mid, text=content['text'], age=content['age'],
+                  gender=content['gender'], photos=str(content['photos']), nickname=content['nickname'],
+                  weather=content['weather'], temperature=content['temperature'],
+                  createTime=content['createTime'],
+                  likedNum=content['likedNum'], commentedNum=content['commentedNum'],
+                  isLiked=content['isLiked'],
+                  score=content['score'], isTop=content['isTop'])
 
 
 def get_thread_score(mid, last=True):
