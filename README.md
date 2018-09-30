@@ -2,7 +2,7 @@
 
 ## USAGE
 
-1. 创建数据库配置文件
+1. 创建数据库配置文件`config.ini`
     
     > 参见config.ini.template
    
