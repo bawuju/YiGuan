@@ -8,9 +8,10 @@
    
 2. 运行`main.py`
 
-## 表结构
+## 库&表结构
 
 ```sql
+CREATE DATABASE `yi_guan`;
 CREATE TABLE `thread` (
   `primary_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `id` varchar(20) DEFAULT NULL COMMENT '帖子id',
@@ -39,5 +40,5 @@ CREATE TABLE `thread` (
   KEY `idx_createTime` (`createTime`),
   KEY `idx_likedNum` (`likedNum`),
   KEY `idx_score` (`score`)
-) ENGINE=InnoDB AUTO_INCREMENT=485532 DEFAULT CHARSET=utf8mb4 COMMENT='一罐帖子表'
+) ENGINE=InnoDB AUTO_INCREMENT=485532 DEFAULT CHARSET=utf8mb4 COMMENT='一罐帖子表';
 ```
