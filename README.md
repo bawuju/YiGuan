@@ -35,7 +35,6 @@ CREATE TABLE `thread` (
   KEY `idx_id` (`id`),
   KEY `idx_mid` (`mid`),
   KEY `idx_age` (`age`),
-  KEY `idx_gender` (`gender`),
   KEY `idx_nickname` (`nickname`),
   KEY `idx_createTime` (`createTime`),
   KEY `idx_likedNum` (`likedNum`),
