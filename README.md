@@ -39,5 +39,5 @@ CREATE TABLE `thread` (
   KEY `idx_createTime` (`createTime`),
   KEY `idx_likedNum` (`likedNum`),
   KEY `idx_score` (`score`)
-) ENGINE=InnoDB AUTO_INCREMENT=485532 DEFAULT CHARSET=utf8mb4 COMMENT='一罐帖子表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='一罐帖子表';
 ```
